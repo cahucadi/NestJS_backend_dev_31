@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+
+  private names: string[] = ["Carlos","Diana","Gabriel", "María Alejandra"];
+
+  getHelloMethod(): string[] {
+    return this.names;
   }
+
 }
