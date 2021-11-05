@@ -2,9 +2,15 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { StudentModule } from './student/student.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [StudentModule],
+  imports: [
+    StudentModule,
+    MongooseModule.forRoot('mongodb+srv://root:root@cluster0.frpti.mongodb.net/db_gr_31', {
+      useNewUrlParser: true
+    })
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
