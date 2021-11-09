@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Patch, Post, Put, Query, Res } from '@nestjs/common';
 import { CreateStudentDTO } from './dto/create_student.dto';
 import { StudentService } from './student.service';
 
@@ -13,21 +13,66 @@ export class StudentController {
         
         return res.status(HttpStatus.OK).json({
             message:'Students listed',
-            students: students
+            data: students
         });
         
 
     }
 
-    @Post("create")
+    @Get('/:studentId')
+    async getStudent(@Res() res , @Param('studentId') id ){
+        const student = await this.studentService.getStudentByID(id);
+
+        if(!student){
+            throw new NotFoundException('Student does not exists');
+        }
+
+        return res.status(HttpStatus.OK).json({
+            message: 'Student found',
+            data: student
+        });
+
+    }
+
+    @Post("/create")
     async createStudent(@Res() res, @Body() createStudentDTO: CreateStudentDTO){
 
         const student = await this.studentService.createStudent(createStudentDTO);
 
         return res.status(HttpStatus.CREATED).json({
-            message:'accepted method',
-            student: student
+            message:'Student created',
+            data: student
         });
     }
+
+    @Put('/update/:studentId')
+    async updateStudent(  @Res() res, @Body() createStudentDTO: CreateStudentDTO, @Param('studentId') id){
+        const student = await this.studentService.updateStudent(id, createStudentDTO);
+
+        if(!student){
+            throw new NotFoundException('Student does not exists');
+        }
+
+        return res.status(HttpStatus.OK).json({
+            message: 'Student updated',
+            data: student
+        });
+    }
+
+    @Delete('/delete')
+    async deleteStudent(@Res() res, @Query('studentId') id){
+        
+        const student = await this.studentService.deleteStudent(id);
+
+        if(!student){
+            throw new NotFoundException('Student does not exists');
+        }
+
+        return res.status(HttpStatus.OK).json({
+            message: 'Student deleted',
+            data: student
+        });
+    }
+
 
 }
