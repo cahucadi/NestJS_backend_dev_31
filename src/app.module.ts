@@ -2,15 +2,23 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { StudentModule } from './student/student.module';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ProductModule } from './product/product.module';
-import {ConfigModule} from '@nestjs/config'
+import {ConfigModule} from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     StudentModule,
-    MongooseModule.forRoot('mongodb+srv://root:root@cluster0.frpti.mongodb.net/db_gr_31', {
-      useNewUrlParser: true
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DATABASE_HOST,
+      port: 3306,
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASS,
+      database: process.env.DATABASE_NAME,
+      autoLoadEntities: true,
+      synchronize: true,
     }),
     ProductModule
   ],

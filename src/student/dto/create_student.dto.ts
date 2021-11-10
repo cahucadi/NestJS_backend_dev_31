@@ -1,4 +1,6 @@
-export class CreateStudentDTO {
+import { IStudent } from "../interfaces/student.interface";
+
+export class CreateStudentDTO implements IStudent {
     
     readonly code: number;
     readonly name: string;

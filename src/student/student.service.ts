@@ -4,37 +4,43 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { IStudent } from './interfaces/student.interface';
 import { CreateStudentDTO } from './dto/create_student.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { StudentEntity } from './models/student.entity';
+import { Repository } from 'typeorm';
+import { from, Observable } from 'rxjs';
 
 @Injectable()
 export class StudentService {
 
-    constructor(@InjectModel('Student') private readonly studentModel: Model<IStudent> ){}
-
+    constructor(@InjectRepository(StudentEntity) private readonly studentRepository: Repository<IStudent>  ){}
 
     getStudents(): Promise<IStudent[]> {
-        const students = this.studentModel.find();
+        const students = this.studentRepository.find();
+        console.log(students);
         return Promise.resolve(students);
+
     }
 
-    async getStudentByID(studentId: string):Promise<IStudent>{
-        const student = await this.studentModel.findById(studentId);
-        return student;
+    getStudentByID(studentId: string):Promise<IStudent>{
+        const student = this.studentRepository.findOne(studentId);
+        console.log(student);
+        return Promise.resolve(student);
     }
 
-    async createStudent(createStudentDTO: CreateStudentDTO): Promise<IStudent>{
-        const student = new this.studentModel(createStudentDTO);
-        await student.save();
-        return student;
+    createStudent(createStudentDTO: CreateStudentDTO): Promise<IStudent>{
+        const student = this.studentRepository.save(createStudentDTO);
+        return Promise.resolve(student);
+
     }
 
-    async updateStudent(studentId: string, createStudentDTO: CreateStudentDTO):Promise<IStudent>{
-        const updatedStudent = await this.studentModel.findByIdAndUpdate(studentId, createStudentDTO, { new: true} );
-        return updatedStudent;
+    updateStudent(studentId: string, createStudentDTO: CreateStudentDTO):Promise<any>{
+        const updatedStudent = this.studentRepository.update(studentId ,createStudentDTO );
+        return Promise.resolve(updatedStudent);
     }
 
-    async deleteStudent(studentId: string):Promise<IStudent>{
-        const deletedStudent = await this.studentModel.findByIdAndDelete(studentId);
-        return deletedStudent;
+    deleteStudent(studentId: string):Promise<any>{
+        const deletedStudent = this.studentRepository.delete(studentId);
+        return Promise.resolve(deletedStudent);
     }
 
 

@@ -10,6 +10,7 @@ export class StudentController {
     @Get()
     async getStudents(@Res() res){
         const students = await this.studentService.getStudents();
+        console.log("??"+students);
         
         return res.status(HttpStatus.OK).json({
             message:'Students listed',
