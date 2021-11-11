@@ -14,32 +14,34 @@ export class StudentService {
 
     constructor(@InjectRepository(StudentEntity) private readonly studentRepository: Repository<IStudent>  ){}
 
-    getStudents(): Promise<IStudent[]> {
-        const students = this.studentRepository.find();
+    async getStudents(): Promise<IStudent[]> {
+        const students = await this.studentRepository.find();
         console.log(students);
         return Promise.resolve(students);
 
     }
 
-    getStudentByID(studentId: string):Promise<IStudent>{
-        const student = this.studentRepository.findOne(studentId);
+    async getStudentByID(studentId: string):Promise<IStudent>{
+        const student = await this.studentRepository.findOne(studentId);
         console.log(student);
         return Promise.resolve(student);
     }
 
-    createStudent(createStudentDTO: CreateStudentDTO): Promise<IStudent>{
-        const student = this.studentRepository.save(createStudentDTO);
+    async createStudent(createStudentDTO: CreateStudentDTO): Promise<IStudent>{
+        const student = await this.studentRepository.save(createStudentDTO);
         return Promise.resolve(student);
 
     }
 
-    updateStudent(studentId: string, createStudentDTO: CreateStudentDTO):Promise<any>{
-        const updatedStudent = this.studentRepository.update(studentId ,createStudentDTO );
+    async updateStudent(studentId: string, createStudentDTO: CreateStudentDTO):Promise<IStudent>{
+        await this.studentRepository.update(studentId ,createStudentDTO );
+        const updatedStudent = await this.studentRepository.findOne(studentId); 
         return Promise.resolve(updatedStudent);
     }
 
-    deleteStudent(studentId: string):Promise<any>{
-        const deletedStudent = this.studentRepository.delete(studentId);
+    async deleteStudent(studentId: string):Promise<IStudent>{
+        const deletedStudent = await this.studentRepository.findOne(studentId); 
+        await this.studentRepository.delete(studentId);
         return Promise.resolve(deletedStudent);
     }
 
