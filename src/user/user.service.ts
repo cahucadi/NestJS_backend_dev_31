@@ -5,11 +5,11 @@ import { LoginUserDTO } from './dto/login_user.dto';
 import { UserDTO } from './dto/user.dto';
 import { UserEntity } from './models/user.entity';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDTO } from './dto/create_user.dto';
+import { use } from 'passport';
 
 @Injectable()
 export class UserService {
-
-    
 
 constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity> ){}
 
@@ -43,6 +43,23 @@ constructor(@InjectRepository(UserEntity) private readonly userRepository: Repos
 
         const user = await this.findOneUser( { where:{username} } );
         return user;
+
+    }
+
+    async createUser( createUserDTO: CreateUserDTO): Promise<UserDTO>{
+
+        const { username, password, email  } = createUserDTO;
+
+        const foundUser = await this.userRepository.findOne({ where: { username } }); 
+        
+        if(foundUser){
+            throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+        }
+
+        const user = await this.userRepository.create({ username, password, email });
+        await this.userRepository.save(user);
+
+        return this.userEntityToUserDTO(user);
 
     }
 

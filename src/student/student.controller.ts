@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Patch, Post, Put, Query, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Patch, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateStudentDTO } from './dto/create_student.dto';
 import { StudentService } from './student.service';
 
@@ -8,7 +9,8 @@ export class StudentController {
     constructor(private readonly studentService: StudentService ){}
 
     @Get()
-    async getStudents(@Res() res){
+    @UseGuards(AuthGuard())
+    async getStudents(@Req() req, @Res() res){
         const students = await this.studentService.getStudents();
         
         return res.status(HttpStatus.OK).json({
