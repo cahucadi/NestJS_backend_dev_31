@@ -4,12 +4,12 @@ import { CreateStudentDTO } from './dto/create_student.dto';
 import { StudentService } from './student.service';
 
 @Controller('student')
+@UseGuards(AuthGuard())
 export class StudentController {
 
     constructor(private readonly studentService: StudentService ){}
 
     @Get()
-    @UseGuards(AuthGuard())
     async getStudents(@Req() req, @Res() res){
         const students = await this.studentService.getStudents();
         
