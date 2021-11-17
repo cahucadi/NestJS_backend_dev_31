@@ -1,13 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
 import { IStudent } from './interfaces/student.interface';
 import { CreateStudentDTO } from './dto/create_student.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentEntity } from './models/student.entity';
 import { Repository } from 'typeorm';
-import { from, Observable } from 'rxjs';
 
 @Injectable()
 export class StudentService {

@@ -13,6 +13,12 @@ export class UserService {
 
 constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity> ){}
 
+
+    async findUserById(id:string):Promise<UserEntity>{
+        const userEntity = await this.userRepository.findOne(id);
+        return userEntity;
+    }
+
     async findOneUser(options?: object) : Promise<UserDTO>{
         const user = await this.userRepository.findOne(options);
         return this.userEntityToUserDTO(user);
@@ -66,8 +72,8 @@ constructor(@InjectRepository(UserEntity) private readonly userRepository: Repos
 
     userEntityToUserDTO( userEntity: UserEntity ): UserDTO {
 
-        const { id, username, email, updatedAt, active } = userEntity;
-        let userDTO : UserDTO = {id, username, email, updatedAt, active}; 
+        const { id, username, email, updatedAt, active, role } = userEntity;
+        let userDTO : UserDTO = {id, username, email, updatedAt, active, role}; 
         return userDTO;
 
     }
