@@ -4,7 +4,6 @@ import { CreateStudentDTO } from './dto/create_student.dto';
 import { StudentService } from './student.service';
 
 @Controller('student')
-@UseGuards(AuthGuard())
 export class StudentController {
 
     constructor(private readonly studentService: StudentService ){}
@@ -13,10 +12,7 @@ export class StudentController {
     async getStudents(@Req() req, @Res() res){
         const students = await this.studentService.getStudents();
         
-        return res.status(HttpStatus.OK).json({
-            message:'Students listed',
-            data: students
-        });
+        return res.status(HttpStatus.OK).send(students);
         
 
     }
@@ -29,10 +25,7 @@ export class StudentController {
             throw new NotFoundException('Student does not exists');
         }
 
-        return res.status(HttpStatus.OK).json({
-            message: 'Student found',
-            data: student
-        });
+        return res.status(HttpStatus.OK).send(student);
 
     }
 
@@ -41,10 +34,7 @@ export class StudentController {
 
         const student = await this.studentService.createStudent(createStudentDTO);
 
-        return res.status(HttpStatus.CREATED).json({
-            message:'Student created',
-            data: student
-        });
+        return res.status(HttpStatus.CREATED).send(student);
     }
 
     @Put('/update/:studentId')
@@ -55,10 +45,7 @@ export class StudentController {
             throw new NotFoundException('Student does not exists');
         }
 
-        return res.status(HttpStatus.OK).json({
-            message: 'Student updated',
-            data: student
-        });
+        return res.status(HttpStatus.OK).send(student);
     }
 
     @Delete('/delete')
@@ -70,10 +57,7 @@ export class StudentController {
             throw new NotFoundException('Student does not exists');
         }
 
-        return res.status(HttpStatus.OK).json({
-            message: 'Student deleted',
-            data: student
-        });
+        return res.status(HttpStatus.OK).send(student);
     }
 
 
