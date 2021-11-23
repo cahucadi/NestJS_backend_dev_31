@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreateStudentDTO } from './dto/create_student.dto';
 import { StudentService } from './student.service';
 
+@UseGuards(AuthGuard())
 @Controller('student')
 export class StudentController {
 

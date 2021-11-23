@@ -36,7 +36,7 @@ export class AuthController {
     }
 
     @Get('whoami')
-    @Role('SUPERUSER','ADMIN')
+    @Role('SUPERUSER','AUTHUSER')
     @UseGuards(AuthGuard(), RoleGuard)
     public async testAuth(@Req() req:any ):Promise<IJwtPayload>{
         return req.user;
