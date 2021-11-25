@@ -17,10 +17,11 @@ import { ProductModule } from './product/product.module';
       host: 'bssxtjgyzc1ispjs41gs-mysql.services.clever-cloud.com',
       port: 3306,
       username: 'ukhf2ngbvmifshyf',
-      password: '785covRvsBbjrNnvUegr ',
+      password: '785covRvsBbjrNnvUegr',
       database: 'bssxtjgyzc1ispjs41gs',
       autoLoadEntities: true,
       synchronize: true,
+      connectTimeout: 30000
     }),
     UserModule,
     AuthModule,
