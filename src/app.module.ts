@@ -19,9 +19,7 @@ import { ProductModule } from './product/product.module';
       username: 'ukhf2ngbvmifshyf',
       password: '785covRvsBbjrNnvUegr',
       database: 'bssxtjgyzc1ispjs41gs',
-      autoLoadEntities: true,
-      synchronize: true,
-      connectTimeout: 30000
+      autoLoadEntities: true
     }),
     UserModule,
     AuthModule,
