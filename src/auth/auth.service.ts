@@ -40,7 +40,7 @@ export class AuthService {
 
         const user = await this.userService.findByLogin(loginUserDTO);
 
-        const expiresIn = process.env.EXPIRES_IN;
+        const expiresIn = 3600;
         const accessToken = this.jwtService.sign(user);
 
         let token: ILoginStatus = {
